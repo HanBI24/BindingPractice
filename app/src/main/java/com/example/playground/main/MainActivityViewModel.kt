@@ -7,9 +7,12 @@ import com.example.playground.main.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,6 +37,26 @@ class MainActivityViewModel @Inject constructor() : BaseViewModel() {
         get() = _isStop
 
     val etAnyText = MutableLiveData("EditText Result Here!")
+
+    private var _currentTime = MutableStateFlow("")
+    val currentTime: StateFlow<String>
+        get() = _currentTime
+
+    private val dateFormat = SimpleDateFormat("HH:mm:ss")
+
+    init {
+        setCurrentTime()
+    }
+
+    private fun setCurrentTime() {
+        viewModelScope.launch {
+            while(true) {
+                val time = System.currentTimeMillis()
+                _currentTime.value = dateFormat.format(time)
+                delay(1000)
+            }
+        }
+    }
 
     fun btnOnClick() {
         when (_btnText.value) {
