@@ -39,8 +39,7 @@ class MainActivityViewModel @Inject constructor() : BaseViewModel() {
     val etAnyText = MutableLiveData("EditText Result Here!")
 
     private var _currentTime = MutableStateFlow("")
-    val currentTime: StateFlow<String>
-        get() = _currentTime
+    val currentTime: StateFlow<String> = _currentTime
 
     private val dateFormat = SimpleDateFormat("HH:mm:ss")
 
